@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: qwerty
+    volumes:
+      - mongo_data:/data/db
+
+  mongo-express:
+    image: mongo-express:latest
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: qwerty
+      ME_CONFIG_MONGODB_URL: mongodb://admin:qwerty@mongo:27017/?authSource=admin
+
+  api:
+    build: .
+    image: ranjithkumarbandi443doc/node-app:latest
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    environment:
+      PORT: 5000
+      MONGODB_URI: mongodb://admin:qwerty@mongo:27017/?authSource=admin
+      MONGODB_DB: dental-db
+
+volumes:
+  mongo_data:
