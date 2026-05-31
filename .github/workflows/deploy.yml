@@ -37,7 +37,9 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/node-app:latest
+
   deploy:
+    needs: build-and-push
     runs-on: self-hosted
 
     steps:
@@ -45,4 +47,4 @@ jobs:
         run: docker compose pull
 
       - name: Restart containers
-        run: docker compose pull && docker compose up -d
+        run: docker compose up -d
