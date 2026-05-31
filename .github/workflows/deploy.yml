@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,5 +38,16 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/node-app:latest
 
-          script: |
-            cd /app && docker compose pull && docker compose up -d
+  # Uncomment when SERVER_* SSH secrets are configured
+    deploy:
+      needs: build-and-push
+      runs-on: ubuntu-latest
+      steps:
+        - name: Deploy to server
+          uses: appleboy/ssh-action@v1
+          with:
+            host: ${{ secrets.SERVER_HOST }}
+            username: ${{ secrets.SERVER_USER }}
+            key: ${{ secrets.SERVER_SSH_KEY }}
+            script: |
+              cd /app && docker compose pull && docker compose up -d
