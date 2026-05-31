@@ -37,12 +37,12 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/node-app:latest
-      deploy:
-        runs-on: self-hosted
+  deploy:
+    runs-on: self-hosted
 
-        steps:
-          - name: Pull latest image
-            run: docker compose pull
+    steps:
+      - name: Pull latest image
+        run: docker compose pull
 
-          - name: Restart containers
-            run: docker compose pull && docker compose up -d
+      - name: Restart containers
+        run: docker compose pull && docker compose up -d
