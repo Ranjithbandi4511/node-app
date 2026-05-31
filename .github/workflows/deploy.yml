@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,16 +38,14 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/node-app:latest
 
-  # Uncomment when SERVER_* SSH secrets are configured
-    deploy:
-      needs: build-and-push
-      runs-on: ubuntu-latest
-      steps:
-        - name: Deploy to server
-          uses: appleboy/ssh-action@v1
-          with:
-            host: ${{ secrets.SERVER_HOST }}
-            username: ${{ secrets.SERVER_USER }}
-            key: ${{ secrets.SERVER_SSH_KEY }}
-            script: |
-              cd /app && docker compose pull && docker compose up -d
+      # Requires SERVER_HOST, SERVER_USER, SERVER_SSH_KEY in GitHub Secrets
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /app
+            docker compose pull
+            docker compose up -d
