@@ -1,3 +1,28 @@
+# Dependencies
 node_modules/
+
+# Environment (secrets) — keep .env.example committed
 .env
+.env.docker
+.env.local
+.env.*.local
+
+# Logs
+logs/
 *.log
+npm-debug.log*
+
+# Test / build output
+coverage/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
