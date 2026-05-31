@@ -37,14 +37,3 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/node-app:latest
-
-  deploy:
-    needs: build-and-push
-    runs-on: self-hosted        # ← runs on YOUR local machine
-
-    steps:
-      - name: Pull and restart containers
-        run: |
-          cd C:\path\to\your\app
-          docker compose pull
-          docker compose up -d
