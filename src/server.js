@@ -24,22 +24,22 @@ app.use((err, req, res, next) => {
 });
 
 async function main() {
-  await connectDb();
+  // await connectDb();
 
   const server = app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`);
   });
 
-  const shutdown = async (signal) => {
-    console.log(`\n${signal} received, shutting down...`);
-    server.close(async () => {
-      await closeDb();
-      process.exit(0);
-    });
-  };
+  // const shutdown = async (signal) => {
+  //   console.log(`\n${signal} received, shutting down...`);
+  //   server.close(async () => {
+  //     await closeDb();
+  //     process.exit(0);
+  //   });
+  // };
 
-  process.on("SIGINT", () => shutdown("SIGINT"));
-  process.on("SIGTERM", () => shutdown("SIGTERM"));
+  // process.on("SIGINT", () => shutdown("SIGINT"));
+  // process.on("SIGTERM", () => shutdown("SIGTERM"));
 }
 
 main().catch((err) => {
