@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
-// const { connectDb, closeDb } = require("./db");
+const { connectDb, closeDb } = require("./db");
 const usersRouter = require("./routes/users");
 
 const PORT = Number(process.env.PORT) || 3000;
@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok ok ok" });
+  res.json({ status: "ok ok" });
 });
 
 app.use("/api/users", usersRouter);
@@ -24,22 +24,22 @@ app.use((err, req, res, next) => {
 });
 
 async function main() {
-  // await connectDb();
+  await connectDb();
 
   const server = app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`);
   });
 
-  // const shutdown = async (signal) => {
-  //   console.log(`\n${signal} received, shutting down...`);
-  //   server.close(async () => {
-  //     await closeDb();
-  //     process.exit(0);
-  //   });
-  // };
+  const shutdown = async (signal) => {
+    console.log(`\n${signal} received, shutting down...`);
+    server.close(async () => {
+      await closeDb();
+      process.exit(0);
+    });
+  };
 
-  // process.on("SIGINT", () => shutdown("SIGINT"));
-  // process.on("SIGTERM", () => shutdown("SIGTERM"));
+  process.on("SIGINT", () => shutdown("SIGINT"));
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
 }
 
 main().catch((err) => {

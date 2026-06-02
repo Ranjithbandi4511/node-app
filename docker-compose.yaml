@@ -15,7 +15,7 @@ services:
     image: mongo-express:latest
     ports:
       - "8081:8081"
-    depends_on:
+    depends_on: 
       - mongo
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
@@ -26,7 +26,7 @@ services:
     build: .
     image: ranjithkumarbandi443doc/node-app:latest
     ports:
-      - "5000:5000"
+      - "80:5000"
     depends_on:
       - mongo
     environment:
