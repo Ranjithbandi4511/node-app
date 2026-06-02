@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok okay, check db working..." });
+  res.json({ status: "ok okay, check db working... 2" });
 });
 
 app.use("/api/users", usersRouter);
